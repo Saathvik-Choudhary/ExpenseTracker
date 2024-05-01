@@ -6,6 +6,9 @@ import com.example.ExpenseTracker.core.InputCurrency;
 import java.math.BigDecimal;
 import java.util.Date;
 
+/**
+ * Class which stores the request to save an expense
+ */
 public class SaveExpenseRequest extends Request {
 
     private final BigDecimal cost;

@@ -10,6 +10,10 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Date;
 
+
+/**
+ * Entity to store the expenses and the JPA table name is "expense"
+ */
 @Entity
 @Table(name = "expense")
 public class Expense {
@@ -50,7 +54,6 @@ public class Expense {
         this.title = title;
         this.cost = cost;
         this.dateOfExpense = dateOfExpense;
-        //setDate(dateOfExpense);
         setDateid(dateOfExpense);
     }
 
@@ -65,7 +68,7 @@ public class Expense {
 
 
     /**
-     * Gets the date  of the expense
+     * Get the date  of the expense
      *
      * @return the date of the expense
      */
@@ -74,7 +77,7 @@ public class Expense {
     }
 
     /**
-     * Gets the id of the expense
+     * Get the id of the expense
      *
      * @return the id of the expense
      */
@@ -118,6 +121,8 @@ public class Expense {
 
         this.dateid=localDate.getYear()*100 + localDate.getMonthValue();
     }
+
+
 
     /**
     @ManyToOne

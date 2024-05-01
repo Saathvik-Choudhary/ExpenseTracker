@@ -8,7 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
+@CrossOrigin
 @RequestMapping("/expense")
 public class ExpenseAPI {
 
@@ -16,24 +17,20 @@ public class ExpenseAPI {
     ExpenseService expenseService;
 
 
-    @CrossOrigin
     @GetMapping("/summary")
-    public ResponseEntity<GetAllExpenseSummaryResponse> saveExpense(final GetAllExpenseSummaryRequest request) {
+    public ResponseEntity<GetAllExpenseSummaryResponse> saveExpense(@RequestBody final GetAllExpenseSummaryRequest request) {
         return ResponseEntity.ok(expenseService.getAlLExpensesSummary(request));
     }
 
-    @CrossOrigin
+
     @GetMapping("/all")
-    public ResponseEntity< Page<ExpenseSummary>> getAllAssets(final GetAllExpensesRequest request){
+    public ResponseEntity< Page<ExpenseSummary>> getAllAssets(@RequestBody final GetAllExpensesRequest request){
         return ResponseEntity.ok( expenseService.getAllExpenses(request).getPage());
     }
 
-    @CrossOrigin
     @PostMapping( "/save")
     public ResponseEntity<SaveExpenseResponse> saveExpense(@RequestBody final SaveExpenseRequest request){
 
-        expenseService.saveExpense(request);
-
-        return ResponseEntity.ok(new SaveExpenseResponse());
+        return ResponseEntity.ok(expenseService.saveExpense(request));
     }
 }

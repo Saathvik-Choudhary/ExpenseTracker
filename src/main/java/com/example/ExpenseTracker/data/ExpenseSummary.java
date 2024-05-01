@@ -3,6 +3,10 @@ package com.example.ExpenseTracker.data;
 import java.math.BigDecimal;
 import java.util.Date;
 
+/**
+ * Class to store the copy of the entity so the copy of the entity
+ */
+
 public class ExpenseSummary {
 
     private final BigDecimal cost;
