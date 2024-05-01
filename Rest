@@ -1,0 +1,17 @@
+                                    //Entity                        //Entity                                //Entity
+
+                                    class Book{					    class Country {                         class Product {
+                                            String isbn;                        String code;                            String barcode;
+                                    }                               }                                       }
+
+                                    Book                            Country                                 Product
+Get Many                    R       GET:      /books                GET:      /countries                    GET:      /products
+        Get One             R       GET:      /books/{isbn}         GET:      /countries/{code}             GET:      /products/{barcode}
+                Update      U       POST:     /books/{isbn}         POST:     /countries/{code}             POST:     /products/{barcode}
+                Delete      D       DELETE:   /books/{isbn}         DELETE:   /countries/{code}             DELETE:   /products/{barcode}
+        Create New          C       PUT:      /books/{isbn}         PUT:      /countries                    PUT:      /products
+        Search              R       GET:      /books                GET:      /countries                    GET:      /products
+        Sort                R       GET:      /books                GET:      /countries                    GET:      /products
+        Filter              R       GET:      /books                GET:      /countries                    GET:      /products
+Get Many                    D       DELETE:   /books                DELETE:   /countries                    DELETE:   /products
+        
