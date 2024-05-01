@@ -11,22 +11,10 @@ import java.util.Date;
  */
 public class GetAllExpenseSummaryRequest extends Request {
 
-    private final Date requestDate;
-
     private final int numberOfMonths;
 
-    public GetAllExpenseSummaryRequest(Date requestDate, int numberOfMonths) {
-        this.requestDate = requestDate;
+    public GetAllExpenseSummaryRequest(int numberOfMonths) {
         this.numberOfMonths = numberOfMonths;
-    }
-
-    /**
-     * Get the date from which the expense summary was requested
-     *
-     * @return  the date from which the expense summary was requested
-     */
-    public Date getRequestDate() {
-        return requestDate;
     }
 
     /**

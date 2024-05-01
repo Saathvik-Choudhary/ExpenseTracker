@@ -11,8 +11,6 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import jakarta.validation.Valid;
-import jakarta.validation.Validator;
 
 /**
  * Main service class containing all the business logic of the expense tracking app
@@ -86,7 +84,7 @@ public class ExpenseService {
      *
      * @return list of MonthSummary objects
      */
-    public GetAllExpenseSummaryResponse getAlLExpensesSummary(GetAllExpenseSummaryRequest request) {
+    public GetAllExpenseSummaryResponse getAllExpensesSummary(GetAllExpenseSummaryRequest request) {
 
         Date originalDate = new Date();
 
@@ -96,7 +94,7 @@ public class ExpenseService {
 
         List<MonthSummary> response=new ArrayList<>();
 
-        for(int i=0;i<3;i++){
+        for(int i=0;i<request.getNumberOfMonths();i++){
             response.add(new MonthSummary(
                     Date.from(currentMonth.atStartOfDay(ZoneId.of("UTC")).toInstant()),
                     expenseRepository.getExpensePerMonth(currentMonth.getYear()*100 + currentMonth.getMonthValue()))

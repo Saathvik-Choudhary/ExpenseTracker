@@ -8,7 +8,7 @@ import org.springframework.data.domain.Page;
  * Class to store the paginated response for the request to get all expenses
  */
 public class GetAllExpensesResponse extends PaginatedResponse {
-
+    
     private final Page<ExpenseSummary> page;
     public GetAllExpensesResponse(final Page<ExpenseSummary> page) {
         this.page=page;

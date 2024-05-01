@@ -14,4 +14,3 @@ Get Many                    R       GET:      /books                GET:      /c
         Sort                R       GET:      /books                GET:      /countries                    GET:      /products
         Filter              R       GET:      /books                GET:      /countries                    GET:      /products
 Get Many                    D       DELETE:   /books                DELETE:   /countries                    DELETE:   /products
-        

@@ -5,7 +5,6 @@ import com.example.ExpenseTracker.data.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,14 +15,15 @@ public class ExpenseAPI {
     ExpenseService expenseService;
 
     @CrossOrigin
-    @PostMapping("/summary")
-    public ResponseEntity<GetAllExpenseSummaryResponse> saveExpense(@RequestBody final GetAllExpenseSummaryRequest request) {
-        return ResponseEntity.ok(expenseService.getAlLExpensesSummary(request));
+    @GetMapping("/summary/{numberOfMonths}")
+    public ResponseEntity<GetAllExpenseSummaryResponse> getExpenseSummary(@PathVariable final int numberOfMonths) {
+        final GetAllExpenseSummaryRequest request = new GetAllExpenseSummaryRequest(numberOfMonths);
+        return ResponseEntity.ok(expenseService.getAllExpensesSummary(request));
     }
 
     @CrossOrigin
-    @PostMapping("/all")
-    public ResponseEntity< Page<ExpenseSummary>> getAllAssets(@RequestBody final GetAllExpensesRequest request){
+    @GetMapping("")
+    public ResponseEntity< Page<ExpenseSummary>> getAllAssets(final GetAllExpensesRequest request){
         return ResponseEntity.ok( expenseService.getAllExpenses(request).getPage());
     }
 
