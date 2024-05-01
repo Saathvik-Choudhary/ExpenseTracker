@@ -18,8 +18,10 @@ import java.util.List;
 @Service
 public class ExpenseService {
 
+    
     @Autowired
     ExpenseRepository expenseRepository;
+
 
     /**
      * Saves the expense in the expense repository
@@ -58,17 +60,16 @@ public class ExpenseService {
 
         int pageSize = Math.max(request.getPageSize(), 100);
 
-        Pageable pageable = PageRequest.of(request.getPageNumber()
-                , pageSize
-                , Sort.by("dateOfExpense").descending() );
+        Pageable pageable = PageRequest.of(request.getPageNumber(),
+                                            pageSize,
+                                            Sort.by("dateOfExpense").descending() );
 
         List<ExpenseSummary> expenseSummaries = new ArrayList<>();
 
         for(Expense expense : expenseRepository.findAll(pageable)){
-            expenseSummaries.add(new ExpenseSummary(    expense.getTitle(),
+            expenseSummaries.add(new ExpenseSummary(expense.getTitle(),
                                                         expense.getCost(),
-                                                        expense.getDateOfExpense()
-            ));
+                                                        expense.getDateOfExpense()));
         }
 
         final long totalCount = expenseRepository.count();
@@ -76,6 +77,7 @@ public class ExpenseService {
 
         return new GetAllExpensesResponse(page);
     }
+
 
     /**
      * Get the month wise expense summary of the expenses

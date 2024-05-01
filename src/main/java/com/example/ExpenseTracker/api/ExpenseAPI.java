@@ -7,8 +7,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Currency;
+import java.util.List;
+import java.util.Set;
+
 @RestController
-@RequestMapping("/expense")
+@RequestMapping("/expenses")
 public class ExpenseAPI {
 
     @Autowired
@@ -28,9 +32,15 @@ public class ExpenseAPI {
     }
 
     @CrossOrigin
-    @PostMapping( "/save")
+    @PutMapping("")
     public ResponseEntity<SaveExpenseResponse> saveExpense(@RequestBody final SaveExpenseRequest request){
 
         return ResponseEntity.ok(expenseService.saveExpense(request));
+    }
+
+    @CrossOrigin
+    @GetMapping("/currencies")
+    public ResponseEntity<Set<Currency>> getCurrencies(){
+        return ResponseEntity.ok( Currency.getAvailableCurrencies());
     }
 }

@@ -1,9 +1,9 @@
 package com.example.ExpenseTracker.data;
 
 import com.example.ExpenseTracker.common.Request;
-import com.example.ExpenseTracker.core.InputCurrency;
 
 import java.math.BigDecimal;
+import java.util.Currency;
 import java.util.Date;
 
 /**
@@ -17,13 +17,12 @@ public class SaveExpenseRequest extends Request {
 
     private final Date dateOfExpense;
 
-    private final InputCurrency currency;
+    private final Currency currency;
 
     public SaveExpenseRequest( final String title,
                                 final BigDecimal cost,
                                 final Date dateOfExpense,
-                                final InputCurrency currency) {
-        this.cost = cost;
+                                final Currency currency) {
         this.title = title;
         this.dateOfExpense = dateOfExpense;
         this.currency=currency;
@@ -57,7 +56,7 @@ public class SaveExpenseRequest extends Request {
         return title;
     }
 
-    public InputCurrency getCurrency() {
+    public Currency getCurrency() {
         return currency;
     }
 }
