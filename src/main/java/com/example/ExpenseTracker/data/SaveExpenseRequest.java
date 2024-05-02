@@ -24,6 +24,7 @@ public class SaveExpenseRequest extends Request {
                                 final Date dateOfExpense,
                                 final Currency currency) {
         this.title = title;
+        this.cost=cost;
         this.dateOfExpense = dateOfExpense;
         this.currency=currency;
     }

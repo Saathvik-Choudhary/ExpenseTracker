@@ -6,9 +6,12 @@ import com.example.ExpenseTracker.persistence.ExpenseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.Date;
 import java.util.List;
 
@@ -16,9 +19,9 @@ import java.util.List;
  * Main service class containing all the business logic of the expense tracking app
  */
 @Service
-public class ExpenseService {
+public class ExpenseService implements CurrencyConverter{
 
-    
+
     @Autowired
     ExpenseRepository expenseRepository;
 
@@ -26,11 +29,11 @@ public class ExpenseService {
     /**
      * Saves the expense in the expense repository
      *
-     * @param request   contains all the details of the expense
+     * @param request  contains all the details of the expense
      *
      * @return any errors if any, the saved details and the saved expense message if the expense is saved successfully
      */
-    public SaveExpenseResponse saveExpense(final SaveExpenseRequest request){
+    public SaveExpenseResponse saveExpense(final SaveExpenseRequest request) throws IOException {
 
         /*
         Validator validator;
@@ -43,9 +46,14 @@ public class ExpenseService {
         }
          */
 
-        expenseRepository.save(new Expense( request.getTitle(),request.getCost(),request.getDateOfExpense()));
+        expenseRepository.save(new Expense( request.getTitle()
+                , CurrencyConverter.convertToUSD( request.getCost(),request.getCurrency())
+                , request.getDateOfExpense()));
 
-        return new SaveExpenseResponse(request.getTitle(),request.getCost(),request.getDateOfExpense(),request.getCurrency());
+        return new SaveExpenseResponse(request.getTitle()
+                ,request.getCost()
+                ,request.getDateOfExpense()
+                ,request.getCurrency());
     }
 
 
@@ -86,7 +94,7 @@ public class ExpenseService {
      *
      * @return list of MonthSummary objects
      */
-    public GetAllExpenseSummaryResponse getAllExpensesSummary(GetAllExpenseSummaryRequest request) {
+    public GetAllExpenseSummaryResponse getAllExpensesSummary(final GetAllExpenseSummaryRequest request) {
 
         Date originalDate = new Date();
 
@@ -99,8 +107,7 @@ public class ExpenseService {
         for(int i=0;i<request.getNumberOfMonths();i++){
             response.add(new MonthSummary(
                     Date.from(currentMonth.atStartOfDay(ZoneId.of("UTC")).toInstant()),
-                    expenseRepository.getExpensePerMonth(currentMonth.getYear()*100 + currentMonth.getMonthValue()))
-            );
+                    expenseRepository.getExpensePerMonth(currentMonth.getYear()*100 + currentMonth.getMonthValue())));
 
             currentMonth = currentMonth.minusMonths(1);
         }

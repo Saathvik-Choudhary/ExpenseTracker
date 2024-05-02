@@ -21,6 +21,8 @@ public interface ExpenseRepository extends JpaRepository<Expense,Long> {
      *
      * @return the total expenses in a particular calendar month
      */
-    @Query("SELECT SUM(e.cost) FROM Expense e WHERE e.dateid = ?1")
+    @Query("SELECT SUM(e.cost) "
+            + "FROM Expense e "
+            + "WHERE e.dateid = ?1")
     BigDecimal getExpensePerMonth(int i);
 }

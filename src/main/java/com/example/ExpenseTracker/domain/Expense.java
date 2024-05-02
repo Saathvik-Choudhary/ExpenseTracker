@@ -1,7 +1,9 @@
 package com.example.ExpenseTracker.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
+import org.springframework.validation.annotation.Validated;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -20,20 +22,15 @@ public class Expense {
 
     @Id
     @Column(name = "id",nullable = false,updatable = false)
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
 
     @Column(name = "cost",nullable = false,updatable = false)
     @NotNull(message = "The cost of the expense can not be null")
     @Digits(integer = 10,fraction = 4,message = "The cost of the expense should contain {0} integers "+
                                                     "and {1} fractional digits")
+    @Positive(message = "The cost of the expense should be positive")
     private BigDecimal cost;
-
-    @Column(name = "title",nullable = false,updatable = false)
-    @NotNull(message = "The title of the asset can not be null")
-    @NotBlank(message = "The title of the asset can not be blank")
-    @NotEmpty(message = "The title of the expense can not be empty")
-    private String title;
 
     @Column(name = "dateid",nullable = false,updatable = false)
     private int dateid;
@@ -43,6 +40,12 @@ public class Expense {
     @PastOrPresent(message = "The date of the expense can only be in the past or the present")
     private Date dateOfExpense;
 
+    @Column(name = "title",nullable = false,updatable = false)
+    @NotNull(message = "The title of the asset can not be null")
+    @NotBlank(message = "The title of the asset can not be blank")
+    @NotEmpty(message = "The title of the expense can not be empty")
+    private String title;
+
     private Expense(){
         super();
     }
@@ -50,10 +53,9 @@ public class Expense {
     public Expense( final String title,
                     final BigDecimal cost,
                     final Date dateOfExpense) {
-
-        this.title = title;
-        this.cost = cost;
-        this.dateOfExpense = dateOfExpense;
+        setTitle(title);
+        setCost(cost);
+        setDateOfExpense(dateOfExpense);
         setDateid(dateOfExpense);
     }
 
@@ -95,6 +97,13 @@ public class Expense {
     }
 
     public void setCost(final BigDecimal cost) {
+        if (cost==null) {
+            throw new NullPointerException("The cost of the expense cann0t be null");
+        }
+        else if(cost.compareTo(BigDecimal.ZERO)<0) {
+            throw new IllegalArgumentException("The cost of the expense cannot be less than");
+        }
+
         this.cost = cost;
     }
 

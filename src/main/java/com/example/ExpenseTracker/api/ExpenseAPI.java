@@ -2,16 +2,20 @@ package com.example.ExpenseTracker.api;
 
 import com.example.ExpenseTracker.core.ExpenseService;
 import com.example.ExpenseTracker.data.*;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.Currency;
 import java.util.List;
 import java.util.Set;
 
 @RestController
+@Validated
 @RequestMapping("/expenses")
 public class ExpenseAPI {
 
@@ -27,13 +31,13 @@ public class ExpenseAPI {
 
     @CrossOrigin
     @GetMapping("")
-    public ResponseEntity< Page<ExpenseSummary>> getAllAssets(final GetAllExpensesRequest request){
+    public ResponseEntity< Page<ExpenseSummary>> getAllAssets( final GetAllExpensesRequest request){
         return ResponseEntity.ok( expenseService.getAllExpenses(request).getPage());
     }
 
     @CrossOrigin
     @PutMapping("")
-    public ResponseEntity<SaveExpenseResponse> saveExpense(@RequestBody final SaveExpenseRequest request){
+    public ResponseEntity<SaveExpenseResponse> saveExpense(@Valid @RequestBody final SaveExpenseRequest request)                                                       throws IOException {
 
         return ResponseEntity.ok(expenseService.saveExpense(request));
     }
