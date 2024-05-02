@@ -37,7 +37,7 @@ public class ExpenseAPI {
 
     @CrossOrigin
     @PutMapping("")
-    public ResponseEntity<SaveExpenseResponse> saveExpense(@Valid @RequestBody final SaveExpenseRequest request)                                                       throws IOException {
+    public ResponseEntity<SaveExpenseResponse> saveExpense(@RequestBody final SaveExpenseRequest request)                                                       throws IOException {
 
         return ResponseEntity.ok(expenseService.saveExpense(request));
     }

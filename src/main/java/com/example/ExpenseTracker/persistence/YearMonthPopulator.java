@@ -1,15 +1,5 @@
 package com.example.ExpenseTracker.persistence;
 
-import com.example.ExpenseTracker.domain.YearMonth;
-import com.example.ExpenseTracker.persistence.YearMonthRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.stereotype.Repository;
-
-import java.time.Year;
-import java.util.ArrayList;
-import java.util.List;
-
 public class YearMonthPopulator{}
 
 /**

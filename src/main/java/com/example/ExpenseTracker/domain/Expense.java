@@ -10,6 +10,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Currency;
 import java.util.Date;
 
 
@@ -32,6 +33,9 @@ public class Expense {
     @Positive(message = "The cost of the expense should be positive")
     private BigDecimal cost;
 
+    @Column(name = "currency",nullable = false,updatable = false)
+    private Currency currency;
+
     @Column(name = "dateid",nullable = false,updatable = false)
     private int dateid;
 
@@ -52,11 +56,13 @@ public class Expense {
 
     public Expense( final String title,
                     final BigDecimal cost,
-                    final Date dateOfExpense) {
+                    final Date dateOfExpense,
+                    final Currency currency) {
         setTitle(title);
         setCost(cost);
         setDateOfExpense(dateOfExpense);
         setDateid(dateOfExpense);
+        setCurrency(currency);
     }
 
     /**
@@ -68,6 +74,14 @@ public class Expense {
         return cost;
     }
 
+    /**
+     * Get teh currency of the expense
+     *
+     * @return the currency of the expense
+     */
+    public Currency getCurrency() {
+        return currency;
+    }
 
     /**
      * Get the date  of the expense
@@ -98,7 +112,7 @@ public class Expense {
 
     public void setCost(final BigDecimal cost) {
         if (cost==null) {
-            throw new NullPointerException("The cost of the expense cann0t be null");
+            throw new NullPointerException("The cost of the expense cannot be null");
         }
         else if(cost.compareTo(BigDecimal.ZERO)<0) {
             throw new IllegalArgumentException("The cost of the expense cannot be less than");
@@ -107,15 +121,28 @@ public class Expense {
         this.cost = cost;
     }
 
+    public void setCurrency(Currency currency) {
+        this.currency = currency;
+    }
+
     public void setDateOfExpense(final Date dateOfExpense) {
+        if(dateOfExpense==null) {
+            throw new NullPointerException("The date of the expense cannot be null");
+        } else if (dateOfExpense.after(new Date())) {
+            throw new IllegalArgumentException("The date of the expense cannot be in the future");
+        }
         this.dateOfExpense = dateOfExpense;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public void setTitle(final String title) {
+
+        if(title==null){
+            throw new NullPointerException("The title of the expense can not be null");
+        }
+        else if(title.trim().length()==0){
+            throw new IllegalArgumentException("The title of the expense can not be blank");
+        }
+
         this.title = title;
     }
 

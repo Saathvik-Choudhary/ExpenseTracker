@@ -8,6 +8,7 @@ import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -20,7 +21,6 @@ import java.util.List;
  */
 @Service
 public class ExpenseService implements CurrencyConverter{
-
 
     @Autowired
     ExpenseRepository expenseRepository;
@@ -35,25 +35,61 @@ public class ExpenseService implements CurrencyConverter{
      */
     public SaveExpenseResponse saveExpense(final SaveExpenseRequest request) throws IOException {
 
-        /*
-        Validator validator;
-        var validationErrors = validator.validate(request);
-        if (!validationErrors.isEmpty()) {
-            // If there are validation errors, create a response with errors
-            SaveExpenseResponse errorResponse = new SaveExpenseResponse();
-            validationErrors.forEach(error -> errorResponse.addError(error.getMessage()));
-            return errorResponse;
-        }
-         */
+        String title =request.getTitle();
+        BigDecimal cost=request.getCost();
+        Date dateOfExpense=request.getDateOfExpense();
 
-        expenseRepository.save(new Expense( request.getTitle()
-                , CurrencyConverter.convertToUSD( request.getCost(),request.getCurrency())
-                , request.getDateOfExpense()));
-
-        return new SaveExpenseResponse(request.getTitle()
-                ,request.getCost()
-                ,request.getDateOfExpense()
+        SaveExpenseResponse response=new SaveExpenseResponse(title
+                ,cost
+                ,dateOfExpense
                 ,request.getCurrency());
+
+        int count=0;
+
+        if(title==null){
+            response.addError("The title of the expense can not be null");
+            count++;
+        } else if (title.trim().isEmpty()) {
+            response.addError("The title of the expense can not be blank");
+            count++;
+        }
+
+        if(cost==null){
+            response.addError("The cost of the expense can not be null");
+            count++;
+        } else if (cost.compareTo(BigDecimal.ZERO)<0) {
+            response.addError("The cost of the expense can not be less than 0");
+            count++;
+        }
+
+        if(dateOfExpense==null) {
+            response.addError("The Date of the expense can not be null");
+            count++;
+        } else if (dateOfExpense.after(new Date())) {
+            response.addError("The date of the expense can not be in the future");
+            count++;
+        }
+
+        if(count!=0)
+            return response;
+
+        /**
+         * Storing the expense entity that has been added to the repository
+         */
+        Expense expense = expenseRepository.save(new Expense( request.getTitle()
+                , CurrencyConverter.convertToUSD( request.getCost(),request.getCurrency())
+                , request.getDateOfExpense()
+                , request.getCurrency()));
+
+        /**
+         *  Setting the title, cost and date of expense which has been stored in the repository
+         */
+        response.setTitle(expense.getTitle());
+        response.setDateOfExpense(expense.getDateOfExpense());
+        response.setCost(expense.getCost());
+        response.setCurrency(expense.getCurrency());
+
+        return response;
     }
 
 
@@ -77,7 +113,8 @@ public class ExpenseService implements CurrencyConverter{
         for(Expense expense : expenseRepository.findAll(pageable)){
             expenseSummaries.add(new ExpenseSummary(expense.getTitle(),
                                                         expense.getCost(),
-                                                        expense.getDateOfExpense()));
+                                                        expense.getDateOfExpense(),
+                                                        expense.getCurrency()));
         }
 
         final long totalCount = expenseRepository.count();

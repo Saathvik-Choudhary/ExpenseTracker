@@ -57,6 +57,11 @@ public class SaveExpenseRequest extends Request {
         return title;
     }
 
+    /**
+     * Get the currency of the expense
+     *
+     * @return the currency of the expense
+     */
     public Currency getCurrency() {
         return currency;
     }

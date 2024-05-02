@@ -11,13 +11,13 @@ import java.util.Date;
  */
 public class SaveExpenseResponse extends Response {// The response abstract class has the errors part in it
 
-    private final BigDecimal cost;
+    private BigDecimal cost;
 
-    private final String title;
+    private String title;
 
-    private final Date dateOfExpense;
+    private Date dateOfExpense;
 
-    private final Currency currency;
+    private Currency currency;
 
     public SaveExpenseResponse( final String title,
                                final BigDecimal cost,
@@ -38,6 +38,14 @@ public class SaveExpenseResponse extends Response {// The response abstract clas
         return cost;
     }
 
+    /**
+     * Get the currency of the expense
+     *
+     * @return the currency of the expense
+     */
+    public Currency getCurrency() {
+        return currency;
+    }
 
     /**
      * Gets the date  of the expense
@@ -57,7 +65,21 @@ public class SaveExpenseResponse extends Response {// The response abstract clas
         return title;
     }
 
-    public Currency getCurrency() {
-        return currency;
+
+
+    public void setCost(BigDecimal cost) {
+        this.cost = cost;
+    }
+
+    public void setCurrency(Currency currency) {
+        this.currency = currency;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDateOfExpense(Date dateOfExpense) {
+        this.dateOfExpense = dateOfExpense;
     }
 }

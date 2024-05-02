@@ -1,6 +1,7 @@
 package com.example.ExpenseTracker.data;
 
 import java.math.BigDecimal;
+import java.util.Currency;
 import java.util.Date;
 
 /**
@@ -11,16 +12,22 @@ public class ExpenseSummary {
 
     private final BigDecimal cost;
 
-    private final String title;
+    private final Currency currency;
 
     private final Date dateOfExpense;
 
+    private final String title;
+
+
+
     public ExpenseSummary( final String title,
                            final BigDecimal cost,
-                           final Date dateOfExpense) {
+                           final Date dateOfExpense,
+                           final Currency currency) {
         this.cost = cost;
         this.title = title;
         this.dateOfExpense = dateOfExpense;
+        this.currency= currency;
     }
 
     /**
@@ -32,6 +39,14 @@ public class ExpenseSummary {
         return cost;
     }
 
+    /**
+     * Get teh currency of the expense
+     *
+     * @return the currency of the expense
+     */
+    public Currency getCurrency() {
+        return currency;
+    }
 
     /**
      * Gets the date  of the expense
@@ -45,7 +60,7 @@ public class ExpenseSummary {
     /**
      * Get the title of the expense
      *
-     * @return the title of the expensse
+     * @return the title of the expense
      */
     public String getTitle() {
         return title;
