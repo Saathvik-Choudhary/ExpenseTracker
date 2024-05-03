@@ -36,4 +36,13 @@ public interface CurrencyConverter {
 
         return new JSONObject(response.toString());
     }
+
+    public static BigDecimal convertBackFromUSD(BigDecimal amount, Currency fromCurrency) throws IOException {
+        URL url = new URL("https://api.exchangerate-api.com/v4/latest/USD");
+        JSONObject jsonResponse = getJsonObject(url);
+        JSONObject rates = jsonResponse.getJSONObject("rates");
+        double exchangeRate = rates.getDouble(fromCurrency.toString());
+
+        return amount.multiply( BigDecimal.valueOf(exchangeRate));
+    }
 }

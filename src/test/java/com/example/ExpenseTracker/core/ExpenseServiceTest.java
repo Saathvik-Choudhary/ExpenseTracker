@@ -48,7 +48,7 @@ public class ExpenseServiceTest {
     }
 
     @Test
-    public void getAllExpensesTest(){
+    public void getAllExpensesTest() throws IOException {
         Page<ExpenseSummary> page=expenseService.getAllExpenses(new GetAllExpensesRequest()).getPage();
 
         Assertions.assertEquals(page.getSize(),100);
@@ -81,6 +81,21 @@ public class ExpenseServiceTest {
         var expense= expenseService.saveExpense(new SaveExpenseRequest("title", new BigDecimal("5030.26"), date , Currency.getInstance("USD")));
 
         Assertions.assertEquals(expense.getErrors().get(0),"The date of the expense can not be in the future");
+    }
+
+    @Test
+    public void convertToUSDTest() throws IOException {
+
+        BigDecimal costOfExpense=expenseService.convertToUSD(BigDecimal.valueOf(83000), Currency.getInstance("INR"));
+
+        Assertions.assertEquals(costOfExpense,BigDecimal.valueOf(994.49));
+    }
+
+    @Test
+    public void convertToExpenseCurrencyTest() throws IOException {
+        BigDecimal costOfEnpense = BigDecimal.valueOf(1001);
+
+        Assertions.assertEquals(expenseService.convertToExpenseCurrency(costOfEnpense,Currency.getInstance("INR")),BigDecimal.valueOf(83543.46));
     }
 
 

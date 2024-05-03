@@ -31,7 +31,7 @@ public class ExpenseAPI {
 
     @CrossOrigin
     @GetMapping("")
-    public ResponseEntity< Page<ExpenseSummary>> getAllAssets( final GetAllExpensesRequest request){
+    public ResponseEntity< Page<ExpenseSummary>> getAllAssets( final GetAllExpensesRequest request) throws IOException {
         return ResponseEntity.ok( expenseService.getAllExpenses(request).getPage());
     }
 

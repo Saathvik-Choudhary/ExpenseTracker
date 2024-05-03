@@ -77,7 +77,7 @@ public class ExpenseService implements CurrencyConverter{
          * Storing the expense entity that has been added to the repository
          */
         Expense expense = expenseRepository.save(new Expense( request.getTitle()
-                , CurrencyConverter.convertToUSD( request.getCost(),request.getCurrency())
+                , convertToUSD( request.getCost(),request.getCurrency())
                 , request.getDateOfExpense()
                 , request.getCurrency()));
 
@@ -100,7 +100,7 @@ public class ExpenseService implements CurrencyConverter{
      *
      * @return a page of expenses
      */
-    public GetAllExpensesResponse getAllExpenses(final GetAllExpensesRequest request){
+    public GetAllExpensesResponse getAllExpenses(final GetAllExpensesRequest request) throws IOException {
 
         int pageSize = Math.max(request.getPageSize(), 100);
 
@@ -112,7 +112,7 @@ public class ExpenseService implements CurrencyConverter{
 
         for(Expense expense : expenseRepository.findAll(pageable)){
             expenseSummaries.add(new ExpenseSummary(expense.getTitle(),
-                                                        expense.getCost(),
+                                                        convertToExpenseCurrency(expense.getCost(),expense.getCurrency()),
                                                         expense.getDateOfExpense(),
                                                         expense.getCurrency()));
         }
@@ -151,4 +151,14 @@ public class ExpenseService implements CurrencyConverter{
 
         return new GetAllExpenseSummaryResponse( response );
     }
+
+
+    public BigDecimal convertToUSD(BigDecimal cost,Currency currency) throws IOException {
+           return CurrencyConverter.convertToUSD( cost,currency);
+    }
+
+    public BigDecimal convertToExpenseCurrency(BigDecimal cost, Currency currency) throws IOException {
+            return CurrencyConverter.convertBackFromUSD(cost,currency);
+    }
+
 }
