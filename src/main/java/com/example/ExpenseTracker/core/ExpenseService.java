@@ -1,5 +1,6 @@
 package com.example.ExpenseTracker.core;
 
+import com.example.ExpenseTracker.common.StringUtil;
 import com.example.ExpenseTracker.data.*;
 import com.example.ExpenseTracker.domain.Expense;
 import com.example.ExpenseTracker.persistence.ExpenseRepository;
@@ -35,42 +36,39 @@ public class ExpenseService implements CurrencyConverter{
      */
     public SaveExpenseResponse saveExpense(final SaveExpenseRequest request) throws IOException {
 
-        String title =request.getTitle();
-        BigDecimal cost=request.getCost();
-        Date dateOfExpense=request.getDateOfExpense();
+        String title = request.getTitle();
+        BigDecimal cost= request.getCost();
+        Date dateOfExpense= request.getDateOfExpense();
 
         SaveExpenseResponse response=new SaveExpenseResponse(title
                 ,cost
                 ,dateOfExpense
                 ,request.getCurrency());
 
-        int count=0;
+        int errorCount=0;
 
-        if(title==null){
+        if(StringUtil.isBlank(title)){
             response.addError("The title of the expense can not be null");
-            count++;
-        } else if (title.trim().isEmpty()) {
-            response.addError("The title of the expense can not be blank");
-            count++;
+            errorCount++;
         }
 
-        if(cost==null){
+        if(cost == null){
             response.addError("The cost of the expense can not be null");
-            count++;
+            errorCount++;
         } else if (cost.compareTo(BigDecimal.ZERO)<0) {
             response.addError("The cost of the expense can not be less than 0");
-            count++;
+            errorCount++;
         }
 
-        if(dateOfExpense==null) {
+        if(dateOfExpense == null) {
             response.addError("The Date of the expense can not be null");
-            count++;
+            errorCount++;
         } else if (dateOfExpense.after(new Date())) {
             response.addError("The date of the expense can not be in the future");
-            count++;
+            errorCount++;
         }
 
-        if(count!=0)
+        if(errorCount!=0)
             return response;
 
         /**
@@ -141,7 +139,8 @@ public class ExpenseService implements CurrencyConverter{
 
         List<MonthSummary> response=new ArrayList<>();
 
-        for(int i=0;i<request.getNumberOfMonths();i++){
+        for(int i=0; i<request.getNumberOfMonths() ;i++){
+
             response.add(new MonthSummary(
                     Date.from(currentMonth.atStartOfDay(ZoneId.of("UTC")).toInstant()),
                     expenseRepository.getExpensePerMonth(currentMonth.getYear()*100 + currentMonth.getMonthValue())));

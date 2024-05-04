@@ -2,7 +2,6 @@ package com.example.ExpenseTracker.api;
 
 import com.example.ExpenseTracker.core.ExpenseService;
 import com.example.ExpenseTracker.data.*;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -11,13 +10,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.Currency;
-import java.util.List;
 import java.util.Set;
 
 @RestController
 @Validated
 @RequestMapping("/expenses")
-public class ExpenseAPI {
+public class ExpenseController {
 
     @Autowired
     ExpenseService expenseService;
